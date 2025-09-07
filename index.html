@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS CHUMBADAS - Serviços e Pagamentos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis para cores e efeitos */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --light-bg: #f8f9fa;
+            --dark-bg: #4a4e69;
+            --text-color: #2b2d42;
+            --text-light: #f8f9fa;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --success-color: #4cc9f0;
+            --warning-color: #f9c74f;
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Efeito de partículas (pseudo-elementos) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(67, 97, 238, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 60%, rgba(58, 12, 163, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 50% 80%, rgba(247, 37, 133, 0.1) 0%, transparent 20%);
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        /* Header e Navegação */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: var(--text-light);
+        }
+
+        /* Seções gerais */
+        section {
+            padding: 5rem 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            text-align: center;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        /* Home Section */
+        #home {
+            background-color: var(--light-bg);
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 2rem;
+        }
+
+        .member-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+            transition: var(--transition);
+        }
+
+        .member-card:hover::before {
+            width: 100%;
+            opacity: 0.1;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .member-card p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: var(--transition);
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+        }
+
+        .profile-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        /* About Section */
+        #about {
+            background-color: #eef4ff;
+        }
+
+        .hobbies-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+        }
+
+        .hobby-item {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            width: 250px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid var(--accent-color);
+        }
+
+        .hobby-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .hobby-item h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* Services Section */
+        #services {
+            background-color: var(--light-bg);
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .skill-bar {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-name {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .skill-percentage {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: rgba(67, 97, 238, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 5px;
+            width: 0;
+            transition: width 1.5s ease-out;
+        }
+
+        /* Contact Section */
+        #contact {
+            background-color: #eef4ff;
+        }
+
+        .contact-form {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(67, 97, 238, 0.05);
+            border: 2px solid rgba(67, 97, 238, 0.1);
+            border-radius: 5px;
+            color: var(--text-color);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: block;
+            margin: 0 auto;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* Efeito de LED piscante */
+        .led-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 5px;
+            z-index: 101;
+        }
+
+        .led {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        .led:nth-child(1) {
+            background-color: var(--primary-color);
+            animation-delay: 0s;
+        }
+
+        .led:nth-child(2) {
+            background-color: var(--secondary-color);
+            animation-delay: 0.5s;
+        }
+
+        .led:nth-child(3) {
+            background-color: var(--accent-color);
+            animation-delay: 1s;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* MODAL DE PERFIL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+            transform: rotate(90deg);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(67, 97, 238, 0.2);
+        }
+
+        .profile-header h2 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-header p {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .service-card p {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .service-price {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .book-btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: var(--transition);
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .book-btn:hover {
+            background: #e50c6f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(247, 37, 133, 0.3);
+        }
+
+        /* CHECKOUT MODAL */
+        .checkout-modal .modal-content {
+            max-width: 600px;
+        }
+
+        .checkout-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .checkout-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(67, 97, 238, 0.2);
+            z-index: 1;
+        }
+
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid rgba(67, 97, 238, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .step.completed {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .checkout-form {
+            display: none;
+        }
+
+        .checkout-form.active {
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .payment-method {
+            border: 2px solid rgba(67, 97, 238, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-color);
+        }
+
+        .payment-method.selected {
+            border-color: var(--primary-color);
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .payment-method i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .payment-details {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(67, 97, 238, 0.2);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn-prev {
+            background: var(--dark-bg);
+        }
+
+        .btn-next {
+            background: var(--primary-color);
+        }
+
+        .btn-complete {
+            background: var(--success-color);
+        }
+
+        .confirmation-message {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .confirmation-message i {
+            font-size: 4rem;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            section {
+                padding: 3rem 1rem;
+            }
+            
+            section h2 {
+                font-size: 2rem;
+            }
+            
+            .members-grid,
+            .skills-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hobbies-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hobby-item {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+
+        /* Animações de entrada */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Efeito de digitação */
+        .typing-effect {
+            overflow: hidden;
+            border-right: 3px solid var(--primary-color);
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary-color) }
+        }
+    </style>
+</head>
+<body>
+    <div class="led-box">
+        <div class="led"></div>
+        <div class="led"></div>
+        <div class="led"></div>
+    </div>
+
+    <header>
+        <h1>OS CHUMBADAS</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#services">Habilidades</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <h2 class="typing-effect">Home</h2>
+        <p>Os membros da equipe OS CHUMBADAS</p>
+        <div class="members-grid">
+            <div class="member-card fade-in" data-member="fabao">
+                <h3>Fabão</h3>
+                <p>Designer UX/UI & Designer Gráfico</p>
+                <button class="profile-btn">Ver Serviços</button>
+            </div>
+            <div class="member-card fade-in" data-member="joao">
+                <h3>João</h3>
+                <p>Técnico em Informática</p>
+                <p>Google Workspace & Microsoft 365</p>
+                <button class="profile-btn">Ver Serviços</button>
+            </div>
+            <div class="member-card fade-in" data-member="victor">
+                <h3>Victor - kkj</h3>
+                <p>Programador Linux & Back-end</p> 
+                <button class="profile-btn">Ver Serviços</button>
+            </div>
+            <div class="member-card fade-in" data-member="cafe">
+                <h3>CAFÉ</h3>
+                <p>Desenvolvedor Full-Stack</p>
+                <button class="profile-btn">Ver Serviços</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="typing-effect">Sobre Nós</h2>
+        <p>Saiba o que cada membro gosta de fazer</p>
+        <div class="hobbies-container">
+            <div class="hobby-item fade-in">
+                <h3>Fabão</h3>
+                <p>Gosta de calistenia, ciclismo, minecraft, Box</p>
+            </div>
+            <div class="hobby-item fade-in">
+                <h3>João</h3>
+                <p>Gosta de Informática, minecraft, Box, Muay Thai</p>
+            </div>
+            <div class="hobby-item fade-in">
+                <h3>Victor - kkj</h3>
+                <p>Hobbies: ATACANTE</p>
+            </div>
+            <div class="hobby-item fade-in">
+                <h3>CAFÉ</h3>
+                <p>Calistenia, Escalada, Queda de Braço, Cross-Fit, Kung-fu, Programação</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <h2 class="typing-effect">Nossas Habilidades</h2>
+        <p>Descobre o esforço de cada um</p>
+        <div class="skills-container">
+            <div class="skill-bar fade-in">
+                <div class="skill-info">
+                    <span class="skill-name">Design</span>
+                    <span class="skill-percentage">90%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" data-width="90%"></div>
+                </div>
+            </div>
+            <div class="skill-bar fade-in">
+                <div class="skill-info">
+                    <span class="skill-name">Desenvolvimento</span>
+                    <span class="skill-percentage">85%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" data-width="85%"></div>
+                </div>
+            </div>
+            <div class="skill-bar fade-in">
+                <div class="skill-info">
+                    <span class="skill-name">Criatividade</span>
+                    <span class="skill-percentage">95%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" data-width="95%"></div>
+                </div>
+            </div>
+            <div class="skill-bar fade-in">
+                <div class="skill-info">
+                    <span class="skill-name">Comunicação</span>
+                    <span class="skill-percentage">80%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" data-width="80%"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="typing-effect">Contate-nos</h2>
+        <p>Contate-nos para mais informações</p>
+        <form class="contact-form fade-in">
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Mensagem</label>
+                <textarea id="message" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Enviar Mensagem</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 OS CHUMBADAS Todos os Direitos reservados.</p>
+    </footer>
+
+    <!-- Modal de Perfil -->
+    <div class="modal" id="profile-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="profile-header">
+                <h2 id="modal-member-name">Nome do Membro</h2>
+                <p id="modal-member-role">Cargo do Membro</p>
+            </div>
+            <div class="services-grid" id="services-container">
+                <!-- Serviços serão carregados via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Checkout -->
+    <div class="modal checkout-modal" id="checkout-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="checkout-steps">
+                <div class="step completed">1</div>
+                <div class="step active">2</div>
+                <div class="step">3</div>
+            </div>
+            
+            <div class="checkout-form active" id="payment-form">
+                <h3>Método de Pagamento</h3>
+                
+                <div class="payment-methods">
+                    <div class="payment-method selected" data-method="visa">
+                        <i class="fa-brands fa-cc-visa"></i>
+                        <span>Visa</span>
+                    </div>
+                    <div class="payment-method" data-method="mastercard">
+                        <i class="fa-brands fa-cc-mastercard"></i>
+                        <span>Mastercard</span>
+                    </div>
+                    <div class="payment-method" data-method="paypal">
+                        <i class="fa-brands fa-paypal"></i>
+                        <span>PayPal</span>
+                    </div>
+                </div>
+                
+                <div class="payment-details">
+                    <div class="form-group">
+                        <label for="card-number">Número do Cartão</label>
+                        <input type="text" id="card-number" placeholder="0000 0000 0000 0000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="card-name">Nome no Cartão</label>
+                        <input type="text" id="card-name" placeholder="Como está no cartão" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="card-expiry">Validade</label>
+                            <input type="text" id="card-expiry" placeholder="MM/AA" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-cvv">CVV</label>
+                            <input type="text" id="card-cvv" placeholder="123" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="submit-btn btn-prev">Voltar</button>
+                    <button class="submit-btn btn-next">Continuar</button>
+                </div>
+            </div>
+            
+            <div class="checkout-form" id="summary-form">
+                <h3>Resumo do Pedido</h3>
+                
+                <div class="summary-item">
+                    <span>Serviço:</span>
+                    <span id="summary-service">Design de Logo</span>
+                </div>
+                <div class="summary-item">
+                    <span>Prestador:</span>
+                    <span id="summary-provider">Fabão</span>
+                </div>
+                <div class="summary-item">
+                    <span>Valor:</span>
+                    <span id="summary-price">R$ 150,00</span>
+                </div>
+                <div class="summary-item">
+                    <span>Taxa:</span>
+                    <span>R$ 5,00</span>
+                </div>
+                <div class="summary-total">
+                    <span>Total:</span>
+                    <span id="summary-total">R$ 155,00</span>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="submit-btn btn-prev">Voltar</button>
+                    <button class="submit-btn btn-complete">Finalizar Pagamento</button>
+                </div>
+            </div>
+            
+            <div class="checkout-form" id="confirmation">
+                <div class="confirmation-message">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <h3>Pagamento Realizado com Sucesso!</h3>
+                    <p>Seu serviço foi agendado e você receberá um e-mail de confirmação em breve.</p>
+                    <button class="submit-btn" id="close-checkout">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos membros e serviços
+        const teamMembers = {
+            fabao: {
+                name: "Fabão",
+                role: "Designer UX/UI & Designer Gráfico",
+                services: [
+                    { id: 1, name: "Design de Logo", description: "Criação de logo profissional para seu negócio", price: 150.00 },
+                    { id: 2, name: "Identidade Visual", description: "Desenvolvimento de identidade visual completa", price: 450.00 },
+                    { id: 3, name: "UI/UX Design", description: "Design de interface e experiência do usuário", price: 800.00 }
+                ]
+            },
+            joao: {
+                name: "João",
+                role: "Técnico em Informática",
+                services: [
+                    { id: 4, name: "Manutenção de Computadores", description: "Reparo e manutenção de hardware e software", price: 120.00 },
+                    { id: 5, name: "Formatação e Instalação", description: "Formatação e instalação de sistemas operacionais", price: 100.00 },
+                    { id: 6, name: "Remoção de Vírus", description: "Limpeza completa de vírus e malware", price: 80.00 }
+                ]
+            },
+            victor: {
+                name: "Victor - kkj",
+                role: "Programador Linux & Back-end",
+                services: [
+                    { id: 7, name: "Desenvolvimento Back-end", description: "Criação de APIs e sistemas server-side", price: 1200.00 },
+                    { id: 8, name: "Scripts em Linux", description: "Automação de tarefas com scripts personalizados", price: 300.00 },
+                    { id: 9, name: "Otimização de Servidores", description: "Configuração e otimização de servidores Linux", price: 500.00 }
+                ]
+            },
+            cafe: {
+                name: "CAFÉ",
+                role: "Desenvolvedor Full-Stack",
+                services: [
+                    { id: 10, name: "Desenvolvimento Web", description: "Criação de sites e aplicações web completas", price: 1500.00 },
+                    { id: 11, name: "Aplicativos Mobile", description: "Desenvolvimento de aplicativos iOS e Android", price: 2000.00 },
+                    { id: 12, name: "Consultoria em TI", description: "Consultoria especializada em tecnologia", price: 200.00 }
+                ]
+            }
+        };
+
+        // Variáveis globais
+        let currentMember = null;
+        let currentService = null;
+        let currentStep = 1;
+
+        // Script para animação de aparecimento ao rolar
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Inicializar barras de progresso
+            document.querySelectorAll('.progress').forEach(progress => {
+                const width = progress.getAttribute('data-width');
+                // Usando setTimeout para garantir que a transição seja visível
+                setTimeout(() => {
+                    progress.style.width = width;
+                }, 100);
+            });
+            
+            // Adicionar evento de submit ao formulário
+            const contactForm = document.querySelector('.contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Simulação de envio do formulário
+                    const submitBtn = this.querySelector('.submit-btn');
+                    const originalText = submitBtn.textContent;
+                    
+                    submitBtn.textContent = 'Enviando...';
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+                        contactForm.reset();
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }, 1500);
+                });
+            }
+            
+            // Adicionar smooth scrolling para links de navegação
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80, // Ajuste para o header fixo
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Adicionar event listeners para os botões de perfil
+            document.querySelectorAll('.member-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const memberId = this.getAttribute('data-member');
+                    openProfileModal(memberId);
+                });
+            });
+            
+            // Fechar modais
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', closeModals);
+            });
+            
+            // Payment method selection
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.addEventListener('click', function() {
+                    document.querySelectorAll('.payment-method').forEach(m => {
+                        m.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Checkout navigation
+            document.querySelector('.btn-next').addEventListener('click', nextStep);
+            document.querySelector('.btn-prev').addEventListener('click', prevStep);
+            document.querySelector('.btn-complete').addEventListener('click', completePayment);
+            document.getElementById('close-checkout').addEventListener('click', closeModals);
+            
+            // Fechar modal clicando fora dele
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeModals();
+                    }
+                });
+            });
+        });
+
+        // Abrir modal de perfil
+        function openProfileModal(memberId) {
+            const member = teamMembers[memberId];
+            if (!member) return;
+            
+            currentMember = memberId;
+            
+            document.getElementById('modal-member-name').textContent = member.name;
+            document.getElementById('modal-member-role').textContent = member.role;
+            
+            const servicesContainer = document.getElementById('services-container');
+            servicesContainer.innerHTML = '';
+            
+            member.services.forEach(service => {
+                const serviceCard = document.createElement('div');
+                serviceCard.className = 'service-card';
+                serviceCard.innerHTML = `
+                    <h3>${service.name}</h3>
+                    <p>${service.description}</p>
+                    <span class="service-price">R$ ${service.price.toFixed(2)}</span>
+                    <button class="book-btn" data-service-id="${service.id}">Agendar Serviço</button>
+                `;
+                servicesContainer.appendChild(serviceCard);
+            });
+            
+            // Adicionar event listeners para os botões de agendamento
+            document.querySelectorAll('.book-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const serviceId = parseInt(this.getAttribute('data-service-id'));
+                    const service = teamMembers[memberId].services.find(s => s.id === serviceId);
+                    
+                    if (service) {
+                        closeModals();
+                        setTimeout(() => {
+                            openCheckoutModal(memberId, service);
+                        }, 300);
+                    }
+                });
+            });
+            
+            document.getElementById('profile-modal').classList.add('active');
+        }
+
+        // Abrir modal de checkout
+        function openCheckoutModal(memberId, service) {
+            currentService = service;
+            
+            // Preencher informações do resumo
+            document.getElementById('summary-service').textContent = service.name;
+            document.getElementById('summary-provider').textContent = teamMembers[memberId].name;
+            document.getElementById('summary-price').textContent = `R$ ${service.price.toFixed(2)}`;
+            
+            const total = service.price + 5; // Adicionando taxa fictícia
+            document.getElementById('summary-total').textContent = `R$ ${total.toFixed(2)}`;
+            
+            // Resetar o checkout para o primeiro passo
+            currentStep = 1;
+            updateCheckoutSteps();
+            
+            document.getElementById('checkout-modal').classList.add('active');
+        }
+
+        // Fechar todos os modais
+        function closeModals() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('active');
+            });
+        }
+
+        // Avançar para o próximo passo do checkout
+        function nextStep() {
+            if (currentStep === 1) {
+                // Validar formulário de pagamento
+                const cardNumber = document.getElementById('card-number').value;
+                const cardName = document.getElementById('card-name').value;
+                const cardExpiry = document.getElementById('card-expiry').value;
+                const cardCvv = document.getElementById('card-cvv').value;
+                
+                if (!cardNumber || !cardName || !cardExpiry || !cardCvv) {
+                    alert('Por favor, preencha todos os campos de pagamento.');
+                    return;
+                }
+            }
+            
+            currentStep++;
+            updateCheckoutSteps();
+        }
+
+        // Voltar para o passo anterior do checkout
+        function prevStep() {
+            currentStep--;
+            updateCheckoutSteps();
+        }
+
+        // Atualizar a exibição dos passos do checkout
+        function updateCheckoutSteps() {
+            // Atualizar indicadores de passo
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                } else if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+            
+            // Mostrar o formulário apropriado
+            document.querySelectorAll('.checkout-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            if (currentStep === 1) {
+                document.getElementById('payment-form').classList.add('active');
+                document.querySelector('.btn-prev').style.visibility = 'hidden';
+            } else if (currentStep === 2) {
+                document.getElementById('summary-form').classList.add('active');
+                document.querySelector('.btn-prev').style.visibility = 'visible';
+            } else if (currentStep === 3) {
+                document.getElementById('confirmation').classList.add('active');
+                document.querySelector('.btn-prev').style.visibility = 'hidden';
+                document.querySelector('.btn-next').style.visibility = 'hidden';
+                document.querySelector('.btn-complete').style.visibility = 'hidden';
+            }
+        }
+
+        // Completar o pagamento
+        function completePayment() {
+            // Simular processamento do pagamento
+            const completeBtn = document.querySelector('.btn-complete');
+            const originalText = completeBtn.textContent;
+            
+            completeBtn.textContent = 'Processando...';
+            completeBtn.disabled = true;
+            
+            setTimeout(() => {
+                currentStep++;
+                updateCheckoutSteps();
+                completeBtn.textContent = originalText;
+                completeBtn.disabled = false;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

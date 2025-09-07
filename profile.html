@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - OS CHUMBADAS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="led-box">
+        <div class="led"></div>
+        <div class="led"></div>
+        <div class="led"></div>
+    </div>
+
+    <header>
+        <h1>OS CHUMBADAS</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">Sobre</a></li>
+                <li><a href="index.html#services">Habilidades</a></li>
+                <li><a href="index.html#profiles">Serviços</a></li>
+                <li><a href="index.html#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="profile">
+        <div class="profile-header">
+            <h2 class="typing-effect" id="profile-name">Perfil do Membro</h2>
+            <p id="profile-role">Cargo do membro</p>
+        </div>
+        
+        <div class="services-list">
+            <h3>Serviços Oferecidos</h3>
+            <div class="services-grid" id="services-container">
+                <!-- Serviços serão carregados via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 OS CHUMBADAS Todos os Direitos reservados.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>
